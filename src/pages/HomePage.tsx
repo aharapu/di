@@ -42,7 +42,7 @@ export const HomePage: React.FunctionComponent = () => {
   }, [query]);
 
   const handleSearch = (search: string) => {
-    setQuery((prev) => ({ ...prev, search }));
+    setQuery({ page: '', search });
   };
 
   return (

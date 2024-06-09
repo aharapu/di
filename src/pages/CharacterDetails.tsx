@@ -21,6 +21,8 @@ export const CharacterDetails: React.FunctionComponent = () => {
 
   if (!charData) return <Typography variant="h3">Loading...</Typography>;
 
+  // TODO -> ADD: the home world info, what neighbors they had, what spaceships they few on...
+
   return (
     <Box sx={{ padding: '40px' }}>
       <Button
