@@ -1,13 +1,5 @@
-import { Search } from "@mui/icons-material";
-import { TextField } from "@mui/material";
+import { HomePage } from '@src/pages';
 
 export function App() {
-  return (
-    <TextField
-      placeholder="Search by character name"
-      InputProps={{
-        endAdornment: <Search />,
-      }}
-    />
-  );
+  return <HomePage />;
 }

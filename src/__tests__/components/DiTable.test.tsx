@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { DiTable } from '../../components/DiTable';
+
+import { DiTable } from '@src/components';
 
 describe('DiTable component', () => {
   test('Does NOT show loading message by default', async () => {
