@@ -9,14 +9,20 @@ interface TableItem {
   data: Pick<SwapiPeople, 'name' | 'mass'>;
 }
 
+interface Query {
+  search: string;
+  page: string;
+}
+
 export const HomePage: React.FunctionComponent = () => {
   const [tableItems, setTableItems] = useState<TableItem[]>([]);
   const [itemCount, setItemCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [query, setQuery] = useState({ search: '', page: '' });
 
-  const getItems = async (search: string) => {
+  const getItems = async (query: Query) => {
     setIsLoading(true);
-    const { results, count } = await getPeople({ search });
+    const { results, count } = await getPeople(query);
 
     const items = results.map((r) => ({ id: r.url, data: { name: r.name, mass: r.mass } }));
     setTableItems(items);
@@ -25,15 +31,15 @@ export const HomePage: React.FunctionComponent = () => {
   };
 
   useEffect(() => {
-    getItems('');
+    getItems(query);
 
     return () => {
       // TODO -> cancel active promises
     };
-  }, []);
+  }, [query]);
 
-  const handleSearch = (val: string) => {
-    getItems(val);
+  const handleSearch = (search: string) => {
+    setQuery((prev) => ({ ...prev, search }));
   };
 
   return (
@@ -51,6 +57,9 @@ export const HomePage: React.FunctionComponent = () => {
           console.log('item', item);
         }}
         itemCount={itemCount}
+        onPageChange={(newPage) => {
+          setQuery((prev) => ({ ...prev, page: newPage.toString() }));
+        }}
       />
     </Box>
   );

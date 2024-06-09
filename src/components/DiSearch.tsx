@@ -26,6 +26,7 @@ export const DiSearch: React.FunctionComponent<DiSearchProps> = ({ onSearch: tri
       value={search}
       onChange={(e) => setSearch(e.target.value)}
       onKeyUp={(e) => {
+        // TODO -> find why focus is lost
         e.preventDefault();
         e.key === 'Enter' && triggerOnSearch(search);
       }}

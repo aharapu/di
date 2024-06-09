@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Box,
   Button,
@@ -23,6 +24,7 @@ interface DiTableProps {
   items: DiTableItem[];
   onClickView?: (item: DiTableItem) => void;
   itemCount: number;
+  onPageChange: (page: number) => void;
 }
 
 export const DiTable: React.FunctionComponent<DiTableProps> = ({
@@ -31,7 +33,10 @@ export const DiTable: React.FunctionComponent<DiTableProps> = ({
   columns,
   onClickView,
   itemCount,
+  onPageChange,
 }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+
   return (
     <Box data-testid="di-table-component" sx={{ paddingTop: '20px' }}>
       {loading && <Typography variant="h4">Loading...</Typography>}
@@ -69,7 +74,16 @@ export const DiTable: React.FunctionComponent<DiTableProps> = ({
               </TableBody>
             </Table>
           </TableContainer>
-          <Pagination count={Math.ceil(itemCount / 10)} />
+          <Box sx={{ display: 'flex', justifyContent: 'center', paddingTop: '16px' }}>
+            <Pagination
+              count={Math.ceil(itemCount / 10)}
+              page={currentPage}
+              onChange={(e, page) => {
+                setCurrentPage(page);
+                onPageChange(page);
+              }}
+            />
+          </Box>
         </>
       )}
       {!loading && items.length === 0 && <Typography variant="h4">No items to display</Typography>}
