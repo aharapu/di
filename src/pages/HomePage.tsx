@@ -11,10 +11,12 @@ interface TableItem {
 
 export const HomePage: React.FunctionComponent = () => {
   const [tableItems, setTableItems] = useState<TableItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     getPeople().then(({ results }) => {
       setTableItems(results.map((r) => ({ id: r.url, data: { name: r.name, mass: r.mass } })));
+      setIsLoading(false);
     });
 
     return () => {
@@ -29,7 +31,14 @@ export const HomePage: React.FunctionComponent = () => {
       }}
     >
       <DiSearch />
-      <DiTable items={tableItems} columns={['name', 'mass']} />
+      <DiTable
+        items={tableItems}
+        columns={['name', 'mass']}
+        loading={isLoading}
+        onClickView={(item) => {
+          console.log('item', item);
+        }}
+      />
     </Box>
   );
 };

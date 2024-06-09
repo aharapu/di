@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Paper,
   Table,
   TableBody,
@@ -10,18 +11,24 @@ import {
   Typography,
 } from '@mui/material';
 
+interface DiTableItem {
+  id: string;
+  data: { [x: string]: string };
+}
+
 interface DiTableProps {
   loading?: boolean;
   columns: string[];
-  items: { id: string; data: { [x: string]: string } }[];
+  items: DiTableItem[];
+  onClickView?: (item: DiTableItem) => void;
 }
 
-export const DiTable: React.FunctionComponent<DiTableProps> = ({ loading = false, items, columns }) => {
+export const DiTable: React.FunctionComponent<DiTableProps> = ({ loading = false, items, columns, onClickView }) => {
   return (
     <Box data-testid="di-table-component" sx={{ paddingTop: '20px' }}>
       {loading && <Typography variant="h4">Loading...</Typography>}
       {!loading && (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} data-testid="di-table-container">
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
@@ -30,6 +37,7 @@ export const DiTable: React.FunctionComponent<DiTableProps> = ({ loading = false
                     <Typography sx={{ fontWeight: 600 }}>{col}</Typography>
                   </TableCell>
                 ))}
+                <TableCell />
               </TableRow>
             </TableHead>
             <TableBody>
@@ -42,6 +50,11 @@ export const DiTable: React.FunctionComponent<DiTableProps> = ({ loading = false
                       </TableCell>
                     );
                   })}
+                  <TableCell align="right">
+                    <Button variant="outlined" onClick={() => onClickView && onClickView(item)}>
+                      View
+                    </Button>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
