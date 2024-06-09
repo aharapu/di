@@ -37,3 +37,9 @@ export async function getPeople(cfg: { search?: string; page?: string } = {}) {
 
   return res.json() as Promise<GetPeopleResult>;
 }
+
+export async function getPeopleById(id: number) {
+  const res = await fetch(`${BASE_URL}${id}`);
+
+  return res.json() as Promise<SwapiPeople>;
+}
