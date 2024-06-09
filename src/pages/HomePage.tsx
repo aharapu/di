@@ -12,10 +12,9 @@ interface TableItem {
 export const HomePage: React.FunctionComponent = () => {
   const [tableItems, setTableItems] = useState<TableItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  // TODO -> add search state
 
   useEffect(() => {
-    getPeople({ search: 'sky' }).then(({ results }) => {
+    getPeople().then(({ results }) => {
       setTableItems(results.map((r) => ({ id: r.url, data: { name: r.name, mass: r.mass } })));
       setIsLoading(false);
     });
@@ -25,13 +24,17 @@ export const HomePage: React.FunctionComponent = () => {
     };
   }, []);
 
+  const handleSearch = (val: string) => {
+    console.log('val', val);
+  };
+
   return (
     <Box
       sx={{
         padding: '40px',
       }}
     >
-      <DiSearch />
+      <DiSearch onSearch={handleSearch} />
       <DiTable
         items={tableItems}
         columns={['name', 'mass']}
