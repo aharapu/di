@@ -26,7 +26,7 @@ interface GetPeopleResult {
 
 const BASE_URL = 'https://swapi.dev/api/people/';
 
-export async function getPeople(cfg: { search?: string } = {}) {
+export async function getPeople(cfg: { search?: string; page?: string } = {}) {
   let url = BASE_URL;
 
   const query = new URLSearchParams(cfg).toString();

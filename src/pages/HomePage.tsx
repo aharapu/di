@@ -11,14 +11,16 @@ interface TableItem {
 
 export const HomePage: React.FunctionComponent = () => {
   const [tableItems, setTableItems] = useState<TableItem[]>([]);
+  const [itemCount, setItemCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   const getItems = async (search: string) => {
     setIsLoading(true);
-    const { results } = await getPeople({ search });
+    const { results, count } = await getPeople({ search });
 
     const items = results.map((r) => ({ id: r.url, data: { name: r.name, mass: r.mass } }));
     setTableItems(items);
+    setItemCount(count);
     setIsLoading(false);
   };
 
@@ -48,6 +50,7 @@ export const HomePage: React.FunctionComponent = () => {
         onClickView={(item) => {
           console.log('item', item);
         }}
+        itemCount={itemCount}
       />
     </Box>
   );
