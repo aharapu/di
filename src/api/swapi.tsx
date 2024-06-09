@@ -24,9 +24,16 @@ interface GetPeopleResult {
   results: SwapiPeople[];
 }
 
-// TODO -> implement search & pagination
-export async function getPeople() {
-  const res = await fetch('https://swapi.dev/api/people/');
+const BASE_URL = 'https://swapi.dev/api/people/';
+
+export async function getPeople(cfg: { search?: string; page?: string } = {}) {
+  let url = BASE_URL;
+
+  const search = new URLSearchParams(cfg).toString();
+
+  if (search) url += `?${search}`;
+
+  const res = await fetch(url);
 
   return res.json() as Promise<GetPeopleResult>;
 }

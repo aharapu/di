@@ -12,9 +12,10 @@ interface TableItem {
 export const HomePage: React.FunctionComponent = () => {
   const [tableItems, setTableItems] = useState<TableItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  // TODO -> add search state
 
   useEffect(() => {
-    getPeople().then(({ results }) => {
+    getPeople({ search: 'sky' }).then(({ results }) => {
       setTableItems(results.map((r) => ({ id: r.url, data: { name: r.name, mass: r.mass } })));
       setIsLoading(false);
     });
