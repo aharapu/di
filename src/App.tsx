@@ -1,7 +1,7 @@
 import { Search } from "@mui/icons-material";
 import { TextField } from "@mui/material";
 
-function App() {
+export function App() {
   return (
     <TextField
       placeholder="Search by character name"
@@ -11,5 +11,3 @@ function App() {
     />
   );
 }
-
-export default App;
