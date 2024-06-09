@@ -3,6 +3,7 @@ import { SwapiPeople, getPeople } from '@src/api/swapi';
 import { DiTable } from '@src/components';
 import { DiSearch } from '@src/components/DiSearch';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface TableItem {
   id: string;
@@ -15,6 +16,8 @@ interface Query {
 }
 
 export const HomePage: React.FunctionComponent = () => {
+  const navigate = useNavigate();
+
   const [tableItems, setTableItems] = useState<TableItem[]>([]);
   const [itemCount, setItemCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -54,7 +57,7 @@ export const HomePage: React.FunctionComponent = () => {
         columns={['name', 'mass']}
         loading={isLoading}
         onClickView={(item) => {
-          console.log('item', item);
+          navigate('/character/' + item.id.split('/')[5]);
         }}
         itemCount={itemCount}
         onPageChange={(newPage) => {
