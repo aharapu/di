@@ -49,6 +49,9 @@ export const HomePage: React.FunctionComponent = () => {
     <Box
       sx={{
         padding: '40px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
       }}
     >
       <DiSearch onSearch={handleSearch} disabled={isLoading} />
