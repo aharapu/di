@@ -1,23 +1,41 @@
-import { Box, Button, Paper, Typography } from '@mui/material';
-import { SwapiPeople, getPeopleById } from '@src/api/swapi';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+
+import { Box, Button, Paper, Typography } from '@mui/material';
+
+import { SwapiPeople, getPeopleById } from '@src/api/swapi';
+
+import { SwapiHomeworld } from './types';
+import { DiInfoCard } from '@src/components/DiInfoCard';
 
 export const CharacterDetails: React.FunctionComponent = () => {
   const navigate = useNavigate();
   const params = useParams<{ id: string }>();
 
   const [charData, setCharData] = useState<SwapiPeople | null>(null);
+  const [homeworldData, setHomeworldData] = useState<SwapiHomeworld | null>(null);
 
-  const getCharData = async (id: number) => {
-    const data = await getPeopleById(id);
+  const getHomeworldData = async (url: string) => {
+    const hw = (await fetch(url).then((r) => r.json())) as SwapiHomeworld;
 
-    setCharData(data);
+    setHomeworldData(hw);
   };
+
+  const getStarshipData = async (urls: string[]) => {
+    if (urls.length === 0) return;
+  };
+
+  const getCharData = useCallback(async (id: number) => {
+    const data = await getPeopleById(id);
+    setCharData(data);
+
+    getHomeworldData(data.homeworld);
+    getStarshipData(data.starships);
+  }, []);
 
   useEffect(() => {
     getCharData(parseInt(params.id ?? ''));
-  }, [params.id]);
+  }, [params.id, getCharData]);
 
   if (!charData) return <Typography variant="h3">Loading...</Typography>;
 
@@ -43,6 +61,20 @@ export const CharacterDetails: React.FunctionComponent = () => {
         <Typography variant="h6">Birth Year: {charData.birth_year}</Typography>
         <Typography variant="h6">Gender: {charData.gender}</Typography>
       </Paper>
+      <DiInfoCard
+        loading={!homeworldData}
+        title={`Homeworld ${homeworldData?.name}`}
+        data={{
+          'Rotational Period': homeworldData?.rotation_period,
+          'Orbital Period': homeworldData?.orbital_period,
+          Diameter: homeworldData?.diameter,
+          Climate: homeworldData?.climate,
+          Gravity: homeworldData?.gravity,
+          Terrain: homeworldData?.terrain,
+          'Surface Water': homeworldData?.surface_water,
+          Population: homeworldData?.population,
+        }}
+      />
     </Box>
   );
 };
