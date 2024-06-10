@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Box, Button, Paper, Typography } from '@mui/material';
+import { Box, Button } from '@mui/material';
 
 import { SwapiPeople, getPeopleById } from '@src/api/swapi';
 
@@ -37,10 +37,6 @@ export const CharacterDetails: React.FunctionComponent = () => {
     getCharData(parseInt(params.id ?? ''));
   }, [params.id, getCharData]);
 
-  if (!charData) return <Typography variant="h3">Loading...</Typography>;
-
-  // TODO -> ADD: the home world info, what neighbors they had, what spaceships they few on...
-
   return (
     <Box sx={{ padding: '40px' }}>
       <Button
@@ -51,19 +47,23 @@ export const CharacterDetails: React.FunctionComponent = () => {
       >
         Back to character list
       </Button>
-      <Paper sx={{ marginTop: '20px', padding: '20px' }} elevation={5}>
-        <Typography variant="h5">Name: {charData.name}</Typography>
-        <Typography variant="h6">Height: {charData.height}</Typography>
-        <Typography variant="h6">Mass: {charData.mass}</Typography>
-        <Typography variant="h6">Hair Color: {charData.hair_color}</Typography>
-        <Typography variant="h6">Skin Color: {charData.skin_color}</Typography>
-        <Typography variant="h6">Eye Color: {charData.eye_color}</Typography>
-        <Typography variant="h6">Birth Year: {charData.birth_year}</Typography>
-        <Typography variant="h6">Gender: {charData.gender}</Typography>
-      </Paper>
+
+      <DiInfoCard
+        loading={!charData}
+        title={charData?.name}
+        data={{
+          Height: charData?.height,
+          Mass: charData?.mass,
+          'Hair Color': charData?.hair_color,
+          'Skin Color': charData?.skin_color,
+          'Eye Color': charData?.eye_color,
+          'Birth Year': charData?.birth_year,
+          Gender: charData?.gender,
+        }}
+      />
       <DiInfoCard
         loading={!homeworldData}
-        title={`Homeworld ${homeworldData?.name}`}
+        title={`From the homeworld planet of ${homeworldData?.name}`}
         data={{
           'Rotational Period': homeworldData?.rotation_period,
           'Orbital Period': homeworldData?.orbital_period,
