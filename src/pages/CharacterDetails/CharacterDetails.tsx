@@ -5,7 +5,7 @@ import { Box, Button } from '@mui/material';
 
 import { SwapiPeople, getPeopleById } from '@src/api/swapi';
 
-import { SwapiHomeworld } from './types';
+import { SwapiHomeworld, SwapiStarship } from './types';
 import { DiInfoCard } from '@src/components/DiInfoCard';
 
 export const CharacterDetails: React.FunctionComponent = () => {
@@ -14,6 +14,7 @@ export const CharacterDetails: React.FunctionComponent = () => {
 
   const [charData, setCharData] = useState<SwapiPeople | null>(null);
   const [homeworldData, setHomeworldData] = useState<SwapiHomeworld | null>(null);
+  const [starshipsData, setStarshipsData] = useState<SwapiStarship[]>([]);
 
   const getHomeworldData = async (url: string) => {
     const hw = (await fetch(url).then((r) => r.json())) as SwapiHomeworld;
@@ -23,6 +24,9 @@ export const CharacterDetails: React.FunctionComponent = () => {
 
   const getStarshipData = async (urls: string[]) => {
     if (urls.length === 0) return;
+
+    const starships = (await Promise.all(urls.map((url) => fetch(url).then((r) => r.json())))) as SwapiStarship[];
+    setStarshipsData(starships);
   };
 
   const getCharData = useCallback(async (id: number) => {
@@ -75,6 +79,33 @@ export const CharacterDetails: React.FunctionComponent = () => {
           Population: homeworldData?.population,
         }}
       />
+      {!!charData?.starships.length &&
+        charData.starships.length > 0 &&
+        charData.starships.map((_, idx) => {
+          const ship = starshipsData[idx];
+
+          return (
+            <DiInfoCard
+              loading={!ship}
+              key={ship?.name ?? Math.random()}
+              title={ship?.name}
+              data={{
+                Model: ship?.model,
+                Manufacturer: ship?.manufacturer,
+                'Cost In Credits': ship?.cost_in_credits,
+                Length: ship?.length,
+                'Max Atmosphering Speed': ship?.max_atmosphering_speed,
+                Crew: ship?.crew,
+                Passengers: ship?.passengers,
+                'Cargo Capacity': ship?.cargo_capacity,
+                Consumables: ship?.consumables,
+                'Hyperdrive Rating': ship?.hyperdrive_rating,
+                MGLT: ship?.MGLT,
+                'Starship Class': ship?.starship_class,
+              }}
+            />
+          );
+        })}
     </Box>
   );
 };
