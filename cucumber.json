@@ -1,0 +1,13 @@
+{
+  "default": {
+    "paths": [
+      "cucumber/**/*.feature"
+    ],
+    "loader": [
+      "ts-node/esm"
+    ],
+    "import": [
+      "cucumber/features/step_definitions/**/*.ts"
+    ]
+  }
+}
