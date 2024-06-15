@@ -1,13 +1,21 @@
 {
   "default": {
     "paths": [
-      "cucumber/**/*.feature"
+      "cucumber/**/navigate_through_pages.feature"
     ],
     "loader": [
       "ts-node/esm"
     ],
     "import": [
       "cucumber/features/step_definitions/**/*.ts"
+    ],
+    "parallel": 0,
+    "format": [
+      "progress-bar",
+      [
+        "html",
+        "cucumber-report.html"
+      ]
     ]
   }
 }
