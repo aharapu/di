@@ -3,9 +3,9 @@ import '@testing-library/jest-dom';
 
 import { HomePage } from '@src/pages';
 
-// TODO -> move to mock folder
+jest.mock('react-router-dom');
 jest.mock('@src/api/swapi', () => ({
-  getPeople: jest.fn(() => Promise.resolve({ results: [] })),
+  getPeople: jest.fn(() => Promise.resolve({ results: [], count: 0 })),
 }));
 
 describe('Home Page', () => {

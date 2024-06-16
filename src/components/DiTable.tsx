@@ -24,7 +24,7 @@ interface DiTableProps {
   items: DiTableItem[];
   onClickView?: (item: DiTableItem) => void;
   itemCount: number;
-  onPageChange: (page: number) => void;
+  onPageChange?: (page: number) => void;
 }
 
 export const DiTable: React.FunctionComponent<DiTableProps> = ({
@@ -84,9 +84,10 @@ export const DiTable: React.FunctionComponent<DiTableProps> = ({
             <Pagination
               count={Math.ceil(itemCount / 10)}
               page={currentPage}
-              onChange={(e, page) => {
+              onChange={(...args) => {
+                const page = args[1];
                 setCurrentPage(page);
-                onPageChange(page);
+                onPageChange && onPageChange(page);
               }}
             />
           </Box>
